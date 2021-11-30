@@ -1,0 +1,31 @@
+{
+    "name": "Development container - python3",
+    "image": "aeresov/devcontainer-python:latest",
+    "remoteUser": "vscode",
+    "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "python.pythonPath": "/usr/local/bin/python",
+        "python.languageServer": "Pylance",
+        "python.linting.enabled": true,
+        "python.linting.flake8Enabled": true,
+        "python.linting.flake8Path": "/usr/local/py-utils/bin/flake8",
+        "python.formatting.provider": "black",
+    },
+    "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "bungcip.better-toml",
+        "redhat.vscode-yaml",
+        "redhat.vscode-xml",
+        "humao.rest-client",
+        "mhutchie.git-graph",
+    ],
+    "mounts": [
+        "source=my-common-extensions,target=/home/vscode/.vscode-server/extensions,type=volume",
+        "source=${localEnv:HOME}/.aws,target=/home/vscode/.aws,type=bind,consistency=cached",
+        "source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached",
+    ],
+    "containerEnv": {
+        "PIPENV_VENV_IN_PROJECT": "1",
+    }
+}

@@ -27,6 +27,34 @@ force_grid_wrap = 0
 use_parentheses = true
 ensure_newline_before_comments = true
 
-
 [tool.pytest.ini_options]
 addopts = "--capture=tee-sys"
+
+[tool.poetry]
+name = "brigantine"
+version = "0.1.0"
+description = ""
+authors = ["Alexander Eresov <Alexander.Eresov@origin.com.au>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+typer = {extras = ["all"], version = "^0.4.0"}
+pydantic = "^1.8.2"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2.5"
+pytest-mock = "^3.6.1"
+isort = "^5.10.1"
+black = "^21.11b1"
+flake8 = "^4.0.1"
+pep8-naming = "^0.12.1"
+flake8-builtins = "^1.5.3"
+flake8-docstrings = "^1.6.0"
+flake8-isort = "^4.1.1"
+flake8-return = "^1.1.3"
+flake8-rst-docstrings = "^0.2.3"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

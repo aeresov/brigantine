@@ -1,6 +1,6 @@
 
 from typer.testing import CliRunner
-from app.main import app
+from brigantine.console import app
 
 runner = CliRunner()
 

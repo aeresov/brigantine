@@ -1,4 +1,3 @@
-
 from typer.testing import CliRunner
 from brigantine.console import app
 

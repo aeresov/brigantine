@@ -1,0 +1,38 @@
+steppers:
+  - &stepper0
+    step_pin: "a15"
+    dir_pin: "a16"
+    enable_pin: "a17"
+    rotation_distance: 50
+    microsteps: 16
+    full_steps_per_rotation: 200
+
+mcu:
+  - name: board0
+    comms:
+      serial: /dev/tty0
+    baud: 250000
+    restart_method: arduino
+kinematics:
+  geometry:
+    corexy:
+      X:
+        - *stepper0
+      Y:
+        - step_pin: "b15"
+          dir_pin: "b16"
+          enable_pin: "b17"
+          rotation_distance: 50
+          microsteps: 16
+          full_steps_per_rotation: 200
+      Z:
+        - step_pin: "c15"
+          dir_pin: "c16"
+          enable_pin: "c17"
+          rotation_distance: 50
+          microsteps: 16
+          full_steps_per_rotation: 200
+  max_velocity: 300
+  max_accel: 3000
+
+

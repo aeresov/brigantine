@@ -13,8 +13,8 @@ class Stepper(BaseModel):
     enable_pin: GPIOPin
     rotation_distance: int
     microsteps: int
-    full_steps_per_rotation: Literal[200, 400]
-    gear_ratio: str
+    full_steps_per_rotation: Literal[200, 400] = 200
+    gear_ratio: Optional[str] = "1:1"
 
 
 class DeltaStepper(Stepper):
@@ -32,16 +32,20 @@ class DeltaGeometry(BaseModel):
     A: DeltaStepper
     B: DeltaStepper
     C: DeltaStepper
+    delta_radius: int
+    print_radius: Optional[int] = None
+    minimum_z_position: int = 0
 
     @root_validator
     def inject_defaults(cls, values: Dict[str, Any]) -> Dict[str, Any]:
-        # angles are 210-330-90
-        if not values["A"]["angle"]:
-            values["A"]["angle"] = 210
-        if not values["B"]["angle"]:
-            values["B"]["angle"] = 330
-        if not values["C"]["angle"]:
-            values["C"]["angle"] = 90
+        if not values["A"].angle:
+            values["A"].angle = 210
+        if not values["B"].angle:
+            values["B"].angle = 330
+        if not values["C"].angle:
+            values["C"].angle = 90
+        if not values["print_radius"]:
+            values["print_radius"] = values["delta_radius"]
         return values
 
 
@@ -65,24 +69,12 @@ class HybridCoreXZ(BaseModel):
     hybrid_corexz: XYZGeometry
 
 
-class Delta(DeltaGeometry):
-    delta_radius: int
-    print_radius: Optional[int] = None
-    minimum_z_position: int = 0
-
-    @root_validator
-    def inject_defaults(cls, values: Dict[str, Any]) -> Dict[str, Any]:
-        if not values["print_radius"]:
-            values["print_radius"] = values["delta_radius"]
-        return values
-
-
 class Delta(BaseModel):
     delta: DeltaGeometry
 
 
 class Kinematics(BaseModel):
-    geometry: Union[Cartesian, CoreXY]
+    geometry: Union[Cartesian, CoreXY, CoreXZ, HybridCoreXY, HybridCoreXZ, Delta]
     max_velocity: int
     max_accel: int
     max_accel_to_decel: Optional[int] = None

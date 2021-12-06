@@ -1,8 +1,8 @@
 from hypothesis import given, strategies
 
+from brigantine.config.common import GPIOPin, Rect
 from brigantine.config.kinematics import Kinematics
 from brigantine.config.mcu import MCU
-from brigantine.config.common import GPIOPin
 
 
 @given(strategies.builds(Kinematics))
@@ -19,3 +19,7 @@ def test_mcu(value: MCU):
 def test_gpioping(value: GPIOPin):
     pass
 
+
+@given(strategies.builds(Rect))
+def test_rect(value: Rect):
+    pass

@@ -37,6 +37,7 @@ class DeltaGeometry(BaseModel):
     minimum_z_position: int = 0
 
     @root_validator
+    @classmethod
     def inject_defaults(cls, values: Dict[str, Any]) -> Dict[str, Any]:
         if not values["A"].angle:
             values["A"].angle = 210
@@ -83,6 +84,7 @@ class Kinematics(BaseModel):
     max_z_accel: Optional[int] = None
 
     @root_validator
+    @classmethod
     def inject_defaults(cls, values: Dict[str, Any]) -> Dict[str, Any]:
         if not values["max_z_velocity"]:
             values["max_z_velocity"] = values["max_velocity"]

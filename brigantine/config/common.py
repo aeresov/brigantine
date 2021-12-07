@@ -17,22 +17,43 @@ class Rect(BaseModel):
     def width(self) -> int:
         return self.x_max - self.x_min
 
-    def height(self) -> int:
+    def depth(self) -> int:
         return self.y_max - self.y_min
 
-    @validator("x_max", "y_max")
+    @validator("x_max")
     @classmethod
-    def rect_makes_sense(cls, v: Any, field: ModelField, values: Dict[str, Any]):
-        match field.name:
-            case "x_max":
-                x_min: Optional[int] = values.get("x_min", None)
-                if x_min and (v - x_min) <= 0:
-                    raise ValueError("invalid rect width")
-            case "y_max":
-                y_min: Optional[int] = values.get("y_min", None)
-                if y_min and (v - y_min) <= 0:
-                    raise ValueError("invalid rect height")
+    def rect_makes_sense(cls, v: Any, values: Dict[str, Any]):
+        x_min: Optional[int] = values.get("x_min", None)
+        if x_min and (v - x_min) <= 0:
+            raise ValueError("invalid rect width")
         return values
+
+    @validator("y_max")
+    @classmethod
+    def rect_makes_sense(cls, v: Any, values: Dict[str, Any]):
+        y_min: Optional[int] = values.get("y_min", None)
+        if y_min and (v - y_min) <= 0:
+            raise ValueError("invalid rect depth")
+        return values
+
+
+class Volume(Rect):
+    """Model for XYZ box."""
+
+    z_max: conint(strict=True, gt=0)
+    z_min: conint(strict=True, ge=0) = 0
+
+    def height(self) -> int:
+        return self.z_max - self.z_min
+
+    @validator("z_max")
+    @classmethod
+    def rect_makes_sense(cls, v: Any, values: Dict[str, Any]):
+        z_min: Optional[int] = values.get("z_min", None)
+        if z_min and (v - z_min) <= 0:
+            raise ValueError("invalid rect height")
+        return values
+
 
 
 

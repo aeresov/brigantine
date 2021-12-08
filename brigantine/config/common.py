@@ -3,7 +3,6 @@
 from typing import Any, Dict, Optional
 
 from pydantic import BaseModel, conint, constr, validator
-from pydantic.fields import ModelField
 
 
 class Rect(BaseModel):
@@ -22,7 +21,7 @@ class Rect(BaseModel):
 
     @validator("x_max")
     @classmethod
-    def rect_makes_sense(cls, v: Any, values: Dict[str, Any]):
+    def positive_width(cls, v: Any, values: Dict[str, Any]):
         x_min: Optional[int] = values.get("x_min", None)
         if x_min and (v - x_min) <= 0:
             raise ValueError("invalid rect width")
@@ -30,7 +29,7 @@ class Rect(BaseModel):
 
     @validator("y_max")
     @classmethod
-    def rect_makes_sense(cls, v: Any, values: Dict[str, Any]):
+    def positive_depth(cls, v: Any, values: Dict[str, Any]):
         y_min: Optional[int] = values.get("y_min", None)
         if y_min and (v - y_min) <= 0:
             raise ValueError("invalid rect depth")
@@ -48,13 +47,11 @@ class Volume(Rect):
 
     @validator("z_max")
     @classmethod
-    def rect_makes_sense(cls, v: Any, values: Dict[str, Any]):
+    def positive_height(cls, v: Any, values: Dict[str, Any]):
         z_min: Optional[int] = values.get("z_min", None)
         if z_min and (v - z_min) <= 0:
             raise ValueError("invalid rect height")
         return values
-
-
 
 
 class GPIOPin(BaseModel):
